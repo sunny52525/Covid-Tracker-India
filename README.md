@@ -1,5 +1,5 @@
 # Covid Tracker India
-Covid Tracker India is a API Based Covid-19 Tracker for India.
+Covid Tracker India is an API Based Covid-19 Tracker for India.
 ### Made as Project for #30DaysOfKotlin by Google
 API Link (https://api.covidindiatracker.com/state_data.json)
 
