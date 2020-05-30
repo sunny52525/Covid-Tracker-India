@@ -25,5 +25,5 @@ https://drive.google.com/uc?id=10f3PfjQRq7Awub3_UiieQunprQacXMeF&export=download
         -AsynTasks
   
 # Connect with me
-* [Facebook](www.facebook.com/sunny52525)
-* [Twitter](www.twitter.com/sunny52525)
+* [Facebook](https://www.facebook.com/sunny52525)
+* [Twitter](https://www.twitter.com/sunny52525)
