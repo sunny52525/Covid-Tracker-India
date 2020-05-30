@@ -9,11 +9,11 @@ API Link (https://api.covidindiatracker.com/state_data.json)
   - View which zone your city comes in
 
 #   Screenshots
-
-[![N|MainActivity](https://drive.google.com/uc?id=10dVoX8YCwxEPkPi8E0FKv5qYWwDzupqN&export=download)](https://drive.google.com/uc?id=10dVoX8YCwxEPkPi8E0FKv5qYWwDzupqN&export=download)
 [![N|DistrictActivity](
 https://drive.google.com/uc?id=10f3PfjQRq7Awub3_UiieQunprQacXMeF&export=download)](
-https://drive.google.com/uc?id=10f3PfjQRq7Awub3_UiieQunprQacXMeF&export=download)
+https://drive.google.com/uc?id=10f3PfjQRq7Awub3_UiieQunprQacXMeF&export=download)   
+[![N|MainActivity](https://drive.google.com/uc?id=10dVoX8YCwxEPkPi8E0FKv5qYWwDzupqN&export=download)](https://drive.google.com/uc?id=10dVoX8YCwxEPkPi8E0FKv5qYWwDzupqN&export=download)
+
 
 ### Overview
         Used in App:
