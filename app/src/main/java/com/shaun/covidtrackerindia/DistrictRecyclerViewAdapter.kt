@@ -8,15 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.district_data.view.*
 
 
 class DistrictRecyclerViewAdapter(view: View) : RecyclerView.ViewHolder(view) {
 
-    val districtDetails: TextView = view.findViewById(R.id.district_name)
-    val confirmedDistric: TextView = view.findViewById(R.id.confirmed_district)
-    val zone: TextView = view.findViewById(R.id.zone_district)
-    val zonetitle: TextView = view.findViewById(R.id.zone_title)
-    val confirmercasestitle: TextView = view.findViewById(R.id.confirmed_title)
+    val districtDetails: TextView = view.district_name
+    val confirmedDistric: TextView = view.confirmed_district
+    val zone: TextView = view.zone_district
+    val zonetitle: TextView = view.zone_title
+    val confirmercasestitle: TextView = view.confirmed_title
 
 }
 

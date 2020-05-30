@@ -9,9 +9,9 @@ import org.json.JSONException
 class getCovidJSONData(private val listener: OnDataAvailable) :
     AsyncTask<String, Void, ArrayList<StateData>>() {
     private val tag = "getCovidJSONData"
-
+    private var total=0
     interface OnDataAvailable {
-        fun OnDataAvailable(data: List<StateData>)
+        fun OnDataAvailable(data: List<StateData>,totalCases :Int)
         fun onError(exception: Exception)
     }
 
@@ -20,11 +20,13 @@ class getCovidJSONData(private val listener: OnDataAvailable) :
         val contestDetails = ArrayList<StateData>()
         try {
             val itemsArray = JSONArray(params[0])
-            for (i in 0 until itemsArray.length()) {
+            for (i in 0 until itemsArray.length())
+            {
                 val jsoncontestDetails = itemsArray.getJSONObject(i)
                 val state = jsoncontestDetails.getString("state")
                 val active = jsoncontestDetails.getLong("active")
                 val confirmed = jsoncontestDetails.getLong("confirmed")
+                total += confirmed.toInt()
                 val death = jsoncontestDetails.getLong("deaths")
                 val recovered = jsoncontestDetails.getLong("recovered")
                 val district = jsoncontestDetails.getJSONArray("districtData")
@@ -46,7 +48,7 @@ class getCovidJSONData(private val listener: OnDataAvailable) :
     override fun onPostExecute(result: ArrayList<StateData>) {
         Log.d(tag, "onPostExecute stareted")
         super.onPostExecute(result)
-        listener.OnDataAvailable(result)
+        listener.OnDataAvailable(result,total)
         Log.d(tag, "onPostExecute ends")
     }
 }

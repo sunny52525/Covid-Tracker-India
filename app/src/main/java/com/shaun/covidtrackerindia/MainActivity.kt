@@ -2,8 +2,9 @@ package com.shaun.covidtrackerindia
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
-import android.os.Bundle
+import android.os.*
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -15,10 +16,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 private var DownloadedJson = "" //I dont know how to implement viewModel as of now
 private const val TAG: String = "Main Activity"
+private val splashTimeOut: Long = 3000 // 1 sec
 
 class MainActivity : AppCompatActivity(), GetRawData.OndownloadComplete,
     getCovidJSONData.OnDataAvailable, RecyclerItemClickListener.OnRecyclerClickListener {
     private var aboutDialog: AlertDialog? = null
+    private var totalCasesIndia = 0
     private val recyclerViewAdapter = RecyclerViewAdapter(ArrayList())
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -51,7 +54,14 @@ class MainActivity : AppCompatActivity(), GetRawData.OndownloadComplete,
 
         recycler_view.adapter = recyclerViewAdapter
 
-        makeHintDisappear()
+        animate(1F, 0F)
+        Handler().postDelayed({
+            animate(0F, 1F)
+            textView6.setText("Total Cases in India is $totalCasesIndia")
+
+
+        }, splashTimeOut)
+
         Log.d(TAG, "ONcreate ENds")
     }
 
@@ -67,14 +77,14 @@ class MainActivity : AppCompatActivity(), GetRawData.OndownloadComplete,
             Toast.makeText(
                 this,
                 "Download Error, Make sure Internet is working fine and restart the app \nLast Updated 26/5/2020",
-                Toast.LENGTH_SHORT
+                Toast.LENGTH_LONG
             ).show()
         }
     }
 
-    override fun OnDataAvailable(data: List<StateData>) {
+    override fun OnDataAvailable(data: List<StateData>, totalCases: Int) {
         Log.d(TAG, ".OndataAvailable Datta is $data")
-
+        totalCasesIndia = totalCases
         recyclerViewAdapter.loadNewData(data)
         Log.d(TAG, ".OndataAvailable ends")
     }
@@ -85,7 +95,7 @@ class MainActivity : AppCompatActivity(), GetRawData.OndownloadComplete,
     }
 
     override fun onItemClick(view: View, postion: Int) {
-
+        vibrate(10L)
         val district = recyclerViewAdapter.getCovid(postion)
         val intent = Intent(this, districtMainActivity::class.java)
         intent.putExtra("DISTRICTDETAILS", district.toString())
@@ -95,7 +105,8 @@ class MainActivity : AppCompatActivity(), GetRawData.OndownloadComplete,
     }
 
     override fun onItemLongClick(view: View, postion: Int) {
-
+        vibrate(30L)
+        Toast.makeText(this, "Click to view District details", Toast.LENGTH_SHORT).show()
     }
 
     @SuppressLint("InflateParams")
@@ -110,16 +121,34 @@ class MainActivity : AppCompatActivity(), GetRawData.OndownloadComplete,
         aboutDialog?.show()
     }
 
-    private fun makeHintDisappear() {
+    private fun animate(start: Float, end: Float) {
         val valueAnimator =
-            ValueAnimator.ofFloat(1f, 0f)
+            ValueAnimator.ofFloat(start, end)
         valueAnimator.duration = 5000
         valueAnimator.addUpdateListener { animation ->
             val alpha = animation.animatedValue as Float
             textView6.alpha = alpha
         }
         valueAnimator.start()
+
     }
+
+    private fun vibrate(sec: Long) {
+        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (vibrator.hasVibrator()) { // Vibrator availability checking
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(
+                    VibrationEffect.createOneShot(
+                        sec,
+                        VibrationEffect.DEFAULT_AMPLITUDE
+                    )
+                ) // New vibrate method for API Level 26 or higher
+            } else {
+                vibrator.vibrate(sec) // Vibrate method for below API Level 26
+            }
+        }
+    }
+
 }
 
 
