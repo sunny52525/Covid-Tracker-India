@@ -1,13 +1,16 @@
 package com.shaun.covidtrackerindia
 
-import android.os.AsyncTask
 import android.util.Log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONException
 
 
-class getCovidJSONData(private val listener: OnDataAvailable) :
-    AsyncTask<String, Void, ArrayList<StateData>>() {
+class getCovidJSONData(private val listener: OnDataAvailable)
+     {
     private val tag = "getCovidJSONData"
     private var total=0
     interface OnDataAvailable {
@@ -15,7 +18,7 @@ class getCovidJSONData(private val listener: OnDataAvailable) :
         fun onError(exception: Exception)
     }
 
-    override fun doInBackground(vararg params: String?): ArrayList<StateData> {
+     private fun InBackground(vararg params: String?): ArrayList<StateData> {
         Log.d(tag, "doInBackground Starts")
         val contestDetails = ArrayList<StateData>()
         try {
@@ -45,10 +48,19 @@ class getCovidJSONData(private val listener: OnDataAvailable) :
         return contestDetails
     }
 
-    override fun onPostExecute(result: ArrayList<StateData>) {
+     private fun afterParsing(result: ArrayList<StateData>) {
         Log.d(tag, "onPostExecute stareted")
-        super.onPostExecute(result)
+
         listener.OnDataAvailable(result,total)
         Log.d(tag, "onPostExecute ends")
+    }
+
+    fun parseJson(rawdata : String){
+        GlobalScope.launch {
+            val result=InBackground(rawdata)
+            withContext(Dispatchers.Main){
+                afterParsing(result)
+            }
+        }
     }
 }

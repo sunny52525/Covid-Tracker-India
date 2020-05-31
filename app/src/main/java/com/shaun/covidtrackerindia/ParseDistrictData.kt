@@ -1,13 +1,16 @@
 package com.shaun.covidtrackerindia
 
-import android.os.AsyncTask
 import android.util.Log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONException
 
 
-class ParseDistrictData(private val listener: OnDataAvailable) :
-    AsyncTask<String, Void, ArrayList<districtDetails>>() {
+class ParseDistrictData(private val listener: OnDataAvailable)
+    {
     private val tag = "ParseDistrictData"
 
     interface OnDataAvailable {
@@ -15,7 +18,7 @@ class ParseDistrictData(private val listener: OnDataAvailable) :
         fun onError(exception: Exception)
     }
 
-    override fun doInBackground(vararg params: String?): ArrayList<districtDetails> {
+     fun doInBackground(vararg params: String?): ArrayList<districtDetails> {
         Log.d(tag, "doInBackground Starts")
         val statedetail = ArrayList<districtDetails>()
         try {
@@ -40,10 +43,17 @@ class ParseDistrictData(private val listener: OnDataAvailable) :
         return statedetail
     }
 
-    override fun onPostExecute(result: ArrayList<districtDetails>) {
+     fun onPostExecute(result: ArrayList<districtDetails>) {
         Log.d(tag, "onPostExecute stareted")
-        super.onPostExecute(result)
         listener.OnDataAvailable(result)
         Log.d(tag, "onPostExecute ends")
+    }
+    fun parseDistrict( json : String){
+        GlobalScope.launch {
+            val result=doInBackground(json)
+            withContext(Dispatchers.Main){
+                onPostExecute(result)
+            }
+        }
     }
 }

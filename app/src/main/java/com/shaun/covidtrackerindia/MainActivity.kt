@@ -16,13 +16,15 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 private var DownloadedJson = "" //I dont know how to implement viewModel as of now
 private const val TAG: String = "Main Activity"
-private val splashTimeOut: Long = 3000 // 1 sec
+private const val splashTimeOut: Long = 3000 // 1 sec
 
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity(), GetRawData.OndownloadComplete,
     getCovidJSONData.OnDataAvailable, RecyclerItemClickListener.OnRecyclerClickListener {
     private var aboutDialog: AlertDialog? = null
     private var totalCasesIndia = 0
     private val recyclerViewAdapter = RecyclerViewAdapter(ArrayList())
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         setTheme(R.style.AppTheme2)
@@ -42,7 +44,7 @@ class MainActivity : AppCompatActivity(), GetRawData.OndownloadComplete,
             onDownloadComplete(inputString, DownloadStatus.OK)
 
             val getRawData = GetRawData(this)
-            getRawData.execute("https://api.covidindiatracker.com/state_data.json")
+            getRawData.downloadrawdata("https://api.covidindiatracker.com/state_data.json")    //get raw data in background thread
 
         } else {
 
@@ -57,7 +59,7 @@ class MainActivity : AppCompatActivity(), GetRawData.OndownloadComplete,
         animate(1F, 0F)
         Handler().postDelayed({
             animate(0F, 1F)
-            textView6.setText("Total Cases in India is $totalCasesIndia")
+            textView6.text = "Total Cases in India is $totalCasesIndia"
 
 
         }, splashTimeOut)
@@ -71,7 +73,7 @@ class MainActivity : AppCompatActivity(), GetRawData.OndownloadComplete,
             DownloadedJson = data
             val getcovidJsonData = getCovidJSONData(this)
 
-            getcovidJsonData.execute(data)
+            getcovidJsonData.parseJson(data)
         } else {
             Log.d(TAG, "onDownloadCompleted failed with status $status . Error msg is $data")
             Toast.makeText(

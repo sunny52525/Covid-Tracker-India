@@ -34,7 +34,7 @@ class districtMainActivity : AppCompatActivity(), ParseDistrictData.OnDataAvaila
         }
 
         val districtdate = ParseDistrictData(this)
-        districtdate.execute(jsonArray)
+        districtdate.parseDistrict(jsonArray)
 
         Log.d(tag, "DISTRICT DETAILS $jsonArray")
 

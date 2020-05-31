@@ -1,8 +1,11 @@
 package com.shaun.covidtrackerindia
 
 
-import android.os.AsyncTask
 import android.util.Log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.net.MalformedURLException
 import java.net.URL
@@ -11,7 +14,7 @@ enum class DownloadStatus {
     OK, IDLE, NOT_INITIALISED, FAILED_OR_EMPTY, PERMISSION_ERROR, ERROR
 }
 
-class GetRawData(private val listener: OndownloadComplete) : AsyncTask<String, Void, String>() {
+class GetRawData(private val listener: OndownloadComplete)  {
     private val tag = "GetRawData"
     private var downloadStatus = DownloadStatus.IDLE
 
@@ -19,12 +22,12 @@ class GetRawData(private val listener: OndownloadComplete) : AsyncTask<String, V
         fun onDownloadComplete(data: String, status: DownloadStatus)
     }
 
-    override fun onPostExecute(result: String) {
+     fun AfterDownloading(result: String) {
         Log.d(tag, "onPOst Ex wiht val $result")
         listener.onDownloadComplete(result, downloadStatus)
     }
 
-    override fun doInBackground(vararg params: String?): String {
+     fun InBackGroundThread(vararg params: String?): String {
         Log.d(tag, "DoInBackground Starts")
         if (params[0] == null) {
             downloadStatus = DownloadStatus.NOT_INITIALISED
@@ -62,4 +65,13 @@ class GetRawData(private val listener: OndownloadComplete) : AsyncTask<String, V
             return errorMessage
         }
     }
+    fun downloadrawdata( link : String){
+        GlobalScope.launch {
+            val result=InBackGroundThread(link)
+            withContext(Dispatchers.Main){
+                AfterDownloading(result)
+            }
+        }
+    }
+
 }
