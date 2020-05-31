@@ -24,7 +24,7 @@ https://drive.google.com/uc?id=10f3PfjQRq7Awub3_UiieQunprQacXMeF&export=download
         -Dialogs
         -Intents
         -Callbacks
-        -AsynTasks
+        -Coroutines
   
 # Connect with me
 * [Facebook](https://www.facebook.com/sunny52525)
