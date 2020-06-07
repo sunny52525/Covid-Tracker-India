@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-private var DownloadedJson = "" //I dont know how to implement viewModel as of now
+private var DownloadedJson = "" 
 private const val TAG: String = "Main Activity"
 private const val splashTimeOut: Long = 3000 // 1 sec
 
