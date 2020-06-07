@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 private var DownloadedJson = "" 
 private const val TAG: String = "Main Activity"
-private const val splashTimeOut: Long = 3000 // 1 sec
+private const val splashTimeOut: Long = 3000 // 3 sec
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity(), GetRawData.OndownloadComplete,
