@@ -8,19 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.statedata.view.*
 import org.json.JSONArray
 
 
 class CovidRecyclerViewAdapter(view: View) : RecyclerView.ViewHolder(view) {
-    var stateName: TextView = view.findViewById(R.id.state_name)
-    var activeCases: TextView = view.findViewById(R.id.active_cases)
-    var deaths: TextView = view.findViewById(R.id.deaths)
-    var recovered: TextView = view.findViewById(R.id.recovered_cases)
-    var total: TextView = view.findViewById(R.id.confirmed_cases)
-    val dummy1: TextView = view.findViewById(R.id.textView10)
-    val dummy2: TextView = view.findViewById(R.id.textView11)
-    val dummy3: TextView = view.findViewById(R.id.textView14)
-    val dummy4: TextView = view.findViewById(R.id.textView16)
+    var stateName: TextView = view.state_name
+    var activeCases: TextView = view.active_cases
+    var deaths: TextView = view.deaths
+    var recovered: TextView = view.recovered_cases
+    var total: TextView = view.confirmed_cases
+    val dummy1: TextView = view.textView10
+    val dummy2: TextView = view.textView11
+    val dummy3: TextView = view.textView14
+    val dummy4: TextView = view.textView16
 
 }
 
@@ -38,7 +39,7 @@ class RecyclerViewAdapter(private var covid: List<StateData>) :
 
     override fun getItemCount(): Int {
         Log.d(tag, ".getItemCount called")
-        return if (covid.isNotEmpty()) covid.size else 1
+        return if (covid.isNotEmpty()) covid.size else 0
     }
 
     fun loadNewData(newContest: List<StateData>) {

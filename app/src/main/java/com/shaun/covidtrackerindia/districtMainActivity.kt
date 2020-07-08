@@ -19,7 +19,7 @@ class districtMainActivity : AppCompatActivity(), ParseDistrictData.OnDataAvaila
         setTheme(R.style.AppTheme2)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.district_activity_main)
-        about.setOnClickListener {
+        about_main.setOnClickListener {
             showAbout()
         }
         fuckthisshit.layoutManager = LinearLayoutManager(this)

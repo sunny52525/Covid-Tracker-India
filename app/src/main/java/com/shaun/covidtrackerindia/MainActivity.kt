@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.extra.*
 
 
 private var DownloadedJson = "" 
@@ -24,27 +25,31 @@ class MainActivity : AppCompatActivity(), GetRawData.OndownloadComplete,
     private var aboutDialog: AlertDialog? = null
     private var totalCasesIndia = 0
     private val recyclerViewAdapter = RecyclerViewAdapter(ArrayList())
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         setTheme(R.style.AppTheme2)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        about.setOnClickListener {
+        about_main.setOnClickListener {
             showAbout()
         }
+        val getRawData = GetRawData(this)
+        refresh.setOnRefreshListener {
+            getRawData.downloadrawdata("https://api.covidindiatracker.com/state_data.json")
 
+        }
+        refresh.isRefreshing = true
         Log.d(TAG, "OnCreate Called")
 
-        val fileName = "offlinejson.txt"
-
-        val inputString: String = assets.open(fileName).bufferedReader().use { it.readText() }
 
         if (DownloadedJson == "") {
-            onDownloadComplete(inputString, DownloadStatus.OK)
 
-            val getRawData = GetRawData(this)
-            getRawData.downloadrawdata("https://api.covidindiatracker.com/state_data.json")    //get raw data in background thread
+
+            getRawData.downloadrawdata("https://api.covidindiatracker.com/state_data.json")
+            textView6.visibility = View.GONE
+            //get raw data in background thread
 
         } else {
 
@@ -56,13 +61,8 @@ class MainActivity : AppCompatActivity(), GetRawData.OndownloadComplete,
 
         recycler_view.adapter = recyclerViewAdapter
 
-        animate(1F, 0F)
-        Handler().postDelayed({
-            animate(0F, 1F)
-            textView6.text = "Total Cases in India is $totalCasesIndia"
 
 
-        }, splashTimeOut)
 
         Log.d(TAG, "ONcreate ENds")
     }
@@ -88,11 +88,22 @@ class MainActivity : AppCompatActivity(), GetRawData.OndownloadComplete,
         Log.d(TAG, ".OndataAvailable Datta is $data")
         totalCasesIndia = totalCases
         recyclerViewAdapter.loadNewData(data)
+        refresh.isRefreshing = false
+
+        textView6.visibility = View.VISIBLE
+        animate(1F, 0F)
+        textView6.text = "Click on state to view District Data"
+        Handler().postDelayed({
+            animate(0F, 1F)
+            textView6.text = "Total Cases in India is $totalCases"
+        }, splashTimeOut)
+
         Log.d(TAG, ".OndataAvailable ends")
     }
 
 
     override fun onError(exception: Exception) {
+        onDownloadComplete(DownloadedJson, DownloadStatus.OK)
         Log.e(TAG, "on error wth $exception")
     }
 
