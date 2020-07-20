@@ -45,6 +45,8 @@ class getCovidJSONData(private val listener: OnDataAvailable)
 
         }
         Log.d(tag, "doInBackground Ends")
+
+         contestDetails.sortByDescending { it.ConfirmedCases }
         return contestDetails
     }
 
